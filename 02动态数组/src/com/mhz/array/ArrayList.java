@@ -1,7 +1,5 @@
 package com.mhz.array;
 
-import java.util.Arrays;
-
 public class ArrayList {
 	// 返回list 的长度, 如果List 中有一个元素, 那返回的size 就是1 , size就是返回元素的个数
 	private int size;
