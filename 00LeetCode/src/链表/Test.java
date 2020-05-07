@@ -1,6 +1,6 @@
-package 链表;
+package 閾捐〃;
 /**
- *  递归 打印出来结果
+ *  閫掑綊 鎵撳嵃鍑烘潵缁撴灉
  * @author Administrator
  *
  */

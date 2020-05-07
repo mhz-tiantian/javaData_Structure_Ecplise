@@ -1,17 +1,17 @@
-package Á´±í;
+package é“¾è¡¨;
 
 /**
- * ·´×ªÁ´±í
+ * åè½¬é“¾è¡¨
  * 
- * @author Administrator ·´×ªÒ»¸öµ¥Á´±í¡£
+ * @author Administrator åè½¬ä¸€ä¸ªå•é“¾è¡¨ã€‚
  * 
- *         Ê¾Àı:
+ *         ç¤ºä¾‹:
  * 
- *         ÊäÈë: 1->2->3->4->5->NULL Êä³ö: 5->4->3->2->1->NULL ½ø½×:
- *         Äã¿ÉÒÔµü´ú»òµİ¹éµØ·´×ªÁ´±í¡£ÄãÄÜ·ñÓÃÁ½ÖÖ·½·¨½â¾öÕâµÀÌâ£¿
- *         Á´½Ó£ºhttps://leetcode-cn.com/problems/reverse-linked-list
+ *         è¾“å…¥: 1->2->3->4->5->NULL è¾“å‡º: 5->4->3->2->1->NULL è¿›é˜¶:
+ *         ä½ å¯ä»¥è¿­ä»£æˆ–é€’å½’åœ°åè½¬é“¾è¡¨ã€‚ä½ èƒ½å¦ç”¨ä¸¤ç§æ–¹æ³•è§£å†³è¿™é“é¢˜ï¼Ÿ
+ *         é“¾æ¥ï¼šhttps://leetcode-cn.com/problems/reverse-linked-list
  */
-public class _206_·´×ªÁ´±í {
+public class _206_åè½¬é“¾è¡¨ {
 
 	public static void main(String[] args) {
 		ListNode node1 = new ListNode(1);
@@ -30,7 +30,7 @@ public class _206_·´×ªÁ´±í {
 	}
 
 	/**
-	 * ·Çµİ¹éµÄ·½Ê½À´·´×ªÁ´±í
+	 * éé€’å½’çš„æ–¹å¼æ¥åè½¬é“¾è¡¨
 	 * 
 	 * @param head
 	 * @return
@@ -38,14 +38,14 @@ public class _206_·´×ªÁ´±í {
 	public static ListNode reverseList2(ListNode head) {
 		ListNode newHead = null;
 		while (head != null) {
-			// Ê×ÏÈ°ÑTempÖ¸Õë  Ö¸Ïò µÚ¶ş¸ö½Úµã
+			// é¦–å…ˆæŠŠTempæŒ‡é’ˆ  æŒ‡å‘ ç¬¬äºŒä¸ªèŠ‚ç‚¹
 			ListNode temp = head.next;
-			//newHead µÚÒ»´ÎµÄnewHead¾ÍÊÇ¸öNUll;
-			// °Ñhead.next¸´ÖÆ¸ø newHead
+			//newHead ç¬¬ä¸€æ¬¡çš„newHeadå°±æ˜¯ä¸ªNUll;
+			// æŠŠhead.nextå¤åˆ¶ç»™ newHead
 			head.next = newHead;
-			// °Ñhead¸´ÖÆ¸ønewHead  ÓÃÓÚÏÂ´ÎÑ­»·
+			// æŠŠheadå¤åˆ¶ç»™newHead  ç”¨äºä¸‹æ¬¡å¾ªç¯
 			newHead = head;
-			// ÔÙ°Ñµ±Ç°µÄtemp½Úµã¸´ÖÆ¸øhead½Úµã ÓÃÓÚÏÂ´ÎÑ­»·
+			// å†æŠŠå½“å‰çš„tempèŠ‚ç‚¹å¤åˆ¶ç»™headèŠ‚ç‚¹ ç”¨äºä¸‹æ¬¡å¾ªç¯
 			head = temp;
 
 		}
@@ -55,13 +55,13 @@ public class _206_·´×ªÁ´±í {
 	}
 
 	/**
-	 * ·´×ªÁ´±í µİ¹éµÄ·½Ê½À´·´×ª
+	 * åè½¬é“¾è¡¨ é€’å½’çš„æ–¹å¼æ¥åè½¬
 	 * 
 	 * @param head
-	 * @return Ë¼Â·1. reverseList Õâ¸ö·½·¨µÄ×÷ÓÃ¾ÍÊÇ ·´×ªÁ´±í ¼ÙÉè:ÎÒÃÇÏÖÔÚÓĞÕâÑùÒ»¸öÁ´±í:5->4->3->2->1->NULL
+	 * @return æ€è·¯1. reverseList è¿™ä¸ªæ–¹æ³•çš„ä½œç”¨å°±æ˜¯ åè½¬é“¾è¡¨ å‡è®¾:æˆ‘ä»¬ç°åœ¨æœ‰è¿™æ ·ä¸€ä¸ªé“¾è¡¨:5->4->3->2->1->NULL
 	 * 
-	 *         ÏÖÔÚheadÎª5 , Èç¹ûÎÒÃÇµ÷ÓÃÍê, ÎÒÃÇµÄ·½·¨ºó ½á¹û: 1->2->3->4->5->NULL ÎÒÃÇÏë Èç¹û
-	 *         ÎÒÃÇreverseList(head.next)( 4->3->2->1->NULL)È¥µ÷ÓÃÎÒÃÇµÄ·½·¨µÄ»° Ó¦¸ÃÊÇÕâÑùµÄ
+	 *         ç°åœ¨headä¸º5 , å¦‚æœæˆ‘ä»¬è°ƒç”¨å®Œ, æˆ‘ä»¬çš„æ–¹æ³•å ç»“æœ: 1->2->3->4->5->NULL æˆ‘ä»¬æƒ³ å¦‚æœ
+	 *         æˆ‘ä»¬reverseList(head.next)( 4->3->2->1->NULL)å»è°ƒç”¨æˆ‘ä»¬çš„æ–¹æ³•çš„è¯ åº”è¯¥æ˜¯è¿™æ ·çš„
 	 *         1->2->3->4->null
 	 * 
 	 * 
@@ -70,12 +70,12 @@ public class _206_·´×ªÁ´±í {
 		if (head == null || head.next == null) {
 			return head;
 		}
-		// µİ¹éÈ¥µ÷ÓÃÁË
+		// é€’å½’å»è°ƒç”¨äº†
 		ListNode newHead = reverseList(head.next);
-		// ÀûÓÃÍ·½ÚµãÄÃµ½ ·´×ªºó×îºóµÄ½Úµã, È»ºó°Ñ×îºóµÄ½ÚµãµÄnext½Úµã
-		// ÖØĞÂÖ´ĞĞÍ·½Úµã, ¾Í¿ÉÒÔÁË,
+		// åˆ©ç”¨å¤´èŠ‚ç‚¹æ‹¿åˆ° åè½¬åæœ€åçš„èŠ‚ç‚¹, ç„¶åæŠŠæœ€åçš„èŠ‚ç‚¹çš„nextèŠ‚ç‚¹
+		// é‡æ–°æ‰§è¡Œå¤´èŠ‚ç‚¹, å°±å¯ä»¥äº†,
 		head.next.next = head;
-		// È»ºó°ÑÍ·½ÚµãµÄnext½ÚµãÖ¸Ïònext ¾Í¿ÉÒÔÍê³É·´×ªÁË
+		// ç„¶åæŠŠå¤´èŠ‚ç‚¹çš„nextèŠ‚ç‚¹æŒ‡å‘next å°±å¯ä»¥å®Œæˆåè½¬äº†
 		head.next = null;
 		return newHead;
 	}

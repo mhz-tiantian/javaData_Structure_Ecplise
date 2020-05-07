@@ -1,10 +1,27 @@
-package Á´±í;
+package é“¾è¡¨;
 
 public class ListNode {
 
 	int val;
-	ListNode next;
-	public  ListNode(int val) {
-		this.val=val;
+	int id;
+	
+	public int getId() {
+		return id;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	ListNode next;
+
+	public ListNode(int val) {
+		this.val = val;
+	}
+
+	@Override
+	public String toString() {
+		return "ListNode [val=" + val + "]";
+	}
+
 }
