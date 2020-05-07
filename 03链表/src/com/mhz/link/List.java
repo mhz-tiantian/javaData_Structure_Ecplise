@@ -2,21 +2,21 @@ package com.mhz.link;
 
 public interface List<T> {
 	/**
-	 * ÔªËØÃ»ÓĞÕÒµ½ µÄ±êÖ¾Î»
+	 * å…ƒç´ æ²¡æœ‰æ‰¾åˆ° çš„æ ‡å¿—ä½
 	 */
 	static final int ELEMENT_NOT_FOUND = -1;
 
 	/**
-	 * ÉèÖÃ index Î»ÖÃµÄÔªËØ
+	 * è®¾ç½® index ä½ç½®çš„å…ƒç´ 
 	 * 
-	 * @param index   Î»ÖÃ
-	 * @param element ĞÂµÄÔªËØ
-	 * @return Ô­À´indexÎ»ÖÃµÄ ÔªËØ
+	 * @param index   ä½ç½®
+	 * @param element æ–°çš„å…ƒç´ 
+	 * @return åŸæ¥indexä½ç½®çš„ å…ƒç´ 
 	 */
 	T set(int index, T element);
 
 	/**
-	 * »ñÈ¡index µÄÎ»ÖÃµÄÔªËØ
+	 * è·å–index çš„ä½ç½®çš„å…ƒç´ 
 	 * 
 	 * @param index
 	 * @return
@@ -24,14 +24,14 @@ public interface List<T> {
 	T get(int index);
 
 	/**
-	 * ·µ»Øµ±Ç°¼¯ºÏ´æ·ÅÔªËØµÄÊıÁ¿
+	 * è¿”å›å½“å‰é›†åˆå­˜æ”¾å…ƒç´ çš„æ•°é‡
 	 * 
 	 * @return
 	 */
 	int getSize();
 
 	/**
-	 * ÅĞ¶Ïµ±Ç°µÄ¼¯ºÏÊÇ²»ÊÇÎª¿Õ
+	 * åˆ¤æ–­å½“å‰çš„é›†åˆæ˜¯ä¸æ˜¯ä¸ºç©º
 	 * 
 	 * @return
 	 */
@@ -40,27 +40,27 @@ public interface List<T> {
 	/**
 	 * 
 	 * @param element
-	 * @return ·µ»Øelement ÔÚµ±Ç°¼¯ºÏËùÔÚµÄË÷Òı
+	 * @return è¿”å›element åœ¨å½“å‰é›†åˆæ‰€åœ¨çš„ç´¢å¼•
 	 */
 	int indexOf(T element);
 
 	/**
-	 * µ±Ç°¼¯ºÏÊÇ²»ÊÇ°üÀ¨ element Õâ¸öÔªËØ
+	 * å½“å‰é›†åˆæ˜¯ä¸æ˜¯åŒ…æ‹¬ element è¿™ä¸ªå…ƒç´ 
 	 * 
 	 * @param element
-	 * @return true Îª°üÀ¨Õâ¸öÔªËØ, false ²»°üÀ¨Õâ¸öÔªËØ
+	 * @return true ä¸ºåŒ…æ‹¬è¿™ä¸ªå…ƒç´ , false ä¸åŒ…æ‹¬è¿™ä¸ªå…ƒç´ 
 	 */
 	boolean contains(T element);
 
 	/**
-	 * Ìí¼ÓÔªËØ
+	 * æ·»åŠ å…ƒç´ 
 	 * 
 	 * @param element
 	 */
 	void add(T element);
 
 	/**
-	 * Ìí¼ÓÔªËØµ½Ö¸¶¨µÄÎ»ÖÃ
+	 * æ·»åŠ å…ƒç´ åˆ°æŒ‡å®šçš„ä½ç½®
 	 * 
 	 * @param index
 	 * @param element
@@ -68,15 +68,15 @@ public interface List<T> {
 	void add(int index, T element);
 
 	/**
-	 * É¾³ı indexÎ»ÖÃµÄÔªËØ ,
+	 * åˆ é™¤ indexä½ç½®çš„å…ƒç´  ,
 	 * 
-	 * @param index Î»ÖÃ ÏÂ±ê
-	 * @return É¾³ıµÄÔªËØ ¾ÉµÄÔªËØ
+	 * @param index ä½ç½® ä¸‹æ ‡
+	 * @return åˆ é™¤çš„å…ƒç´  æ—§çš„å…ƒç´ 
 	 */
 	T remove(int index);
 
 	/**
-	 * Çå¿Õµ±Ç°µÄ¼¯ºÏ
+	 * æ¸…ç©ºå½“å‰çš„é›†åˆ
 	 */
 	void clear();
 }

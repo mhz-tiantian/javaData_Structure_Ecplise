@@ -21,7 +21,7 @@ public class Main {
 		arrayList.add(37);
 		arrayList.add(39);
 		int old = arrayList.set(2, 89);
-		System.out.println("Ìæ»»ºóµÄÔªËØÎª" + old);
+		System.out.println("æ›¿æ¢åçš„å…ƒç´ ä¸º" + old);
 		arrayList.toString();
 
 	}

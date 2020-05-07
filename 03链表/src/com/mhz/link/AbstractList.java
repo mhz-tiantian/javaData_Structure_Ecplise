@@ -1,9 +1,9 @@
 package com.mhz.link;
 
 /**
- * ³éÏóÀà, ÓÃÓÚ·â×° ×ÓÀà Ò»ÑùµÄ·½·¨
+ * æŠ½è±¡ç±», ç”¨äºå°è£… å­ç±» ä¸€æ ·çš„æ–¹æ³•
  * 
- * @author Administrator
+ * @author mahaizhen
  *
  * @param <T>
  */
@@ -28,19 +28,19 @@ public abstract class AbstractList<T> implements List<T> {
 	
 	
 	/**
-	 * ÅĞ¶Ï Ä³¸öÔªËØ ÔÚ¼¯ºÏÖĞÊÇ·ñ°üÀ¨
+	 * åˆ¤æ–­ æŸä¸ªå…ƒç´  åœ¨é›†åˆä¸­æ˜¯å¦åŒ…æ‹¬
 	 * 
-	 * @return ÕÒµ½ÔªËØ·µ»Øtrue Ã»ÓĞÕÒµ½·µ»Øfalse
+	 * @return æ‰¾åˆ°å…ƒç´ è¿”å›true æ²¡æœ‰æ‰¾åˆ°è¿”å›false
 	 */
 	@Override
 	public boolean contains(T element) {
-		// ÕÒµ½ÔªËØ
+		// æ‰¾åˆ°å…ƒç´ 
 		return indexOf(element) != ELEMENT_NOT_FOUND;
 
 	}
 
 	/**
-	 * Êı×éÔ½½çÒì³£ , ¶ÔÓÚÏÂ±êµÄ¼ì²é
+	 * æ•°ç»„è¶Šç•Œå¼‚å¸¸ , å¯¹äºä¸‹æ ‡çš„æ£€æŸ¥
 	 * 
 	 * @param index
 	 */
@@ -56,7 +56,7 @@ public abstract class AbstractList<T> implements List<T> {
 	}
 
 	/**
-	 * Ìí¼ÓµÄÊ±ºòÈ¥¼ì²éÏÂ±ê
+	 * æ·»åŠ çš„æ—¶å€™å»æ£€æŸ¥ä¸‹æ ‡
 	 * 
 	 * @param index
 	 */

@@ -3,12 +3,12 @@ package com.mhz.link;
 @SuppressWarnings("hiding")
 public class LinkedList<T> extends AbstractList<T> {
 
-	// µÚÒ»¸ö½Úµã ÕâÊÇÃ»ÓĞÍ·½ÚµãµÄ µÚÒ»¸ö½Úµã ¾ÍÓĞÔªËØÁË
+	// ç¬¬ä¸€ä¸ªèŠ‚ç‚¹ è¿™æ˜¯æ²¡æœ‰å¤´èŠ‚ç‚¹çš„ ç¬¬ä¸€ä¸ªèŠ‚ç‚¹ å°±æœ‰å…ƒç´ äº†
 	Node<T> first;
 
 	static class Node<T> {
 		T element;
-		// Ö¸ÏòÏÂÒ»¸öÔªËØ
+		// æŒ‡å‘ä¸‹ä¸€ä¸ªå…ƒç´ 
 		Node<T> next;
 
 		public Node(T element, Node<T> next) {
@@ -42,16 +42,16 @@ public class LinkedList<T> extends AbstractList<T> {
 
 	@Override
 	public void add(int index, T element) {
-		// ÏÈ¼ì²éÏÂ ÏÂ±ê ÊÇ·ñÕıÈ·
+		// å…ˆæ£€æŸ¥ä¸‹ ä¸‹æ ‡ æ˜¯å¦æ­£ç¡®
 		checkIndexForAdd(index);
 		if (index == 0) {
-			// index =0µÄÊ±ºòÆäÊµ¾ÍÊÇ ´´½¨firstµÄÕâ¸ö½Úµã ,
-			// ÒòÎªµ±Ç°µÄfirst½ÚµãÆäÊµÊÇ¿ÕµÄ
+			// index =0çš„æ—¶å€™å…¶å®å°±æ˜¯ åˆ›å»ºfirstçš„è¿™ä¸ªèŠ‚ç‚¹ ,
+			// å› ä¸ºå½“å‰çš„firstèŠ‚ç‚¹å…¶å®æ˜¯ç©ºçš„
 			first = new Node<T>(element, first);
 		} else {
-			// »ñµÃindex µÄÉÏÒ»¸ö½Úµã
+			// è·å¾—index çš„ä¸Šä¸€ä¸ªèŠ‚ç‚¹
 			Node<T> preNode = getNodeIndex(index - 1);
-			// ³õÊ¼»¯ ÒªÌí¼ÓµÄ½Úµã ÉÏÒ»¸ö½ÚµãµÄnext Ö¸ÏòÒªÌí¼ÓµÄÔªËØÉÏ
+			// åˆå§‹åŒ– è¦æ·»åŠ çš„èŠ‚ç‚¹ ä¸Šä¸€ä¸ªèŠ‚ç‚¹çš„next æŒ‡å‘è¦æ·»åŠ çš„å…ƒç´ ä¸Š
 			preNode.next = new Node<T>(element, preNode.next);
 		}
 		size++;
@@ -63,21 +63,21 @@ public class LinkedList<T> extends AbstractList<T> {
 		Node<T> currentNode = null;
 		if (index == 0) {
 			currentNode = first;
-			// ÒòÎªµÚÒ»¸öfirst ½Úµã¾Í´æ·ÅµÄÔªËØÁË, ËùÓĞ µ±index=0 µÄÊ±ºò ,
-			// ÆäÊµµ±Ç°µÄ½Úµã¾ÍÊÇcurrentNode ¾ÍÊÇfirst½Úµã
+			// å› ä¸ºç¬¬ä¸€ä¸ªfirst èŠ‚ç‚¹å°±å­˜æ”¾çš„å…ƒç´ äº†, æ‰€æœ‰ å½“index=0 çš„æ—¶å€™ ,
+			// å…¶å®å½“å‰çš„èŠ‚ç‚¹å°±æ˜¯currentNode å°±æ˜¯firstèŠ‚ç‚¹
 			first = currentNode.next;
 
 		} else {
-			// ÏÂÃæÊÇ´¦Àí index>0 µÄÇé¿ö
-			// »ñµÃÉÏÒ»¸ö½Úµã
+			// ä¸‹é¢æ˜¯å¤„ç† index>0 çš„æƒ…å†µ
+			// è·å¾—ä¸Šä¸€ä¸ªèŠ‚ç‚¹
 			Node<T> preNode = getNodeIndex(index - 1);
-			// »ñµÃÒªÉ¾³ıµÄ½Úµã
+			// è·å¾—è¦åˆ é™¤çš„èŠ‚ç‚¹
 			currentNode = preNode.next;
-			// ÉÏÒ»¸ö½ÚµãµÄ ÏÂÒ»¸ö½Úµã Ö¸Ïò ÏÂÒ»¸ö½ÚµãµÄ ÏÂÒ»¸ö½Úµã"
+			// ä¸Šä¸€ä¸ªèŠ‚ç‚¹çš„ ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ æŒ‡å‘ ä¸‹ä¸€ä¸ªèŠ‚ç‚¹çš„ ä¸‹ä¸€ä¸ªèŠ‚ç‚¹"
 			preNode.next = currentNode.next;
 		}
 
-		// ÒòÎª½ÚµãµÄ¸öÊı ¼õÉÙ , ËùÒÔsize--
+		// å› ä¸ºèŠ‚ç‚¹çš„ä¸ªæ•° å‡å°‘ , æ‰€ä»¥size--
 		size--;
 		return currentNode.element;
 	}
@@ -90,7 +90,7 @@ public class LinkedList<T> extends AbstractList<T> {
 	}
 
 	/**
-	 * ·µ»ØindexÎ»ÖÃµÄÔªËØ
+	 * è¿”å›indexä½ç½®çš„å…ƒç´ 
 	 */
 	@Override
 	public T get(int index) {
@@ -106,14 +106,14 @@ public class LinkedList<T> extends AbstractList<T> {
 	}
 
 	/**
-	 * ·µ»Øindex Î»ÖÃµÄ½Úµã
+	 * è¿”å›index ä½ç½®çš„èŠ‚ç‚¹
 	 * 
 	 * @param index
 	 * @return
 	 */
 	private Node<T> getNodeIndex(int index) {
 
-		// ÏÈ¼ì²éindexµÄ´«ÈëµÄÖµ ÊÇ·ñÕıÈ·
+		// å…ˆæ£€æŸ¥indexçš„ä¼ å…¥çš„å€¼ æ˜¯å¦æ­£ç¡®
 		checkIndex(index);
 		Node<T> tempNode = first;
 		for (int i = 0; i < index; i++) {
@@ -125,7 +125,7 @@ public class LinkedList<T> extends AbstractList<T> {
 
 	@Override
 	public String toString() {
-		/// ´òÓ¡ĞÎÊ½Îª: size=5, [99, 88, 77, 66, 55]
+		/// æ‰“å°å½¢å¼ä¸º: size=5, [99, 88, 77, 66, 55]
 		StringBuffer sb = new StringBuffer();
 		sb.append("size=");
 		sb.append(size);
