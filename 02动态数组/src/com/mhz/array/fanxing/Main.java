@@ -4,10 +4,10 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Person person = new Person(1, "²âÊÔ1");
+		Person person = new Person(1, "æµ‹è¯•1");
 		ArrayList<Person> persArrayList = new ArrayList<Person>();
 		persArrayList.add(person);
-		person = new Person(2, "²âÊÔ2");
+		person = new Person(2, "æµ‹è¯•2");
 		persArrayList.add(person);
 		persArrayList.toString();
 	}

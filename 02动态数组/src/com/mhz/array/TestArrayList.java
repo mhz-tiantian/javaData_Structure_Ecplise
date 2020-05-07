@@ -1,7 +1,7 @@
 package com.mhz.array;
 
 /**
- * ²âÊÔArrayList Ö»ÊÇint Öµ
+ * æµ‹è¯•ArrayList åªæ˜¯int å€¼
  * 
  * @author Administrator
  *
@@ -23,13 +23,13 @@ public class TestArrayList {
 		resultString = arrayList.toString();
 		System.out.print(resultString);
 		int removeElement = arrayList.remove(5);
-		System.out.print("É¾³ıµÄÔªËØÎª" + removeElement);
+		System.out.print("åˆ é™¤çš„å…ƒç´ ä¸º" + removeElement);
 		
 		 resultString = arrayList.toString();
 		
 //		arrayList.clear();
 //		resultString = arrayList.toString();
-//		System.out.print("Çå¿ÕºóµÄ¼¯ºÏ==="+resultString);
+//		System.out.print("æ¸…ç©ºåçš„é›†åˆ==="+resultString);
 
 	}
 
