@@ -1,5 +1,7 @@
 package com.mhz.link;
 
+
+@SuppressWarnings("unchecked")
 public class ArrayList<T> extends AbstractList<T> {
 	// 返回list 的长度, 如果List 中有一个元素, 那返回的size 就是1 , size就是返回元素的个数
 	private T[] elements;// 当前存放元素的数组
@@ -30,7 +32,7 @@ public class ArrayList<T> extends AbstractList<T> {
 		}
 		// 把新的数组内存地址, 指向旧的数组(elements)
 		elements = newElements;
-//		System.out.println("size=" + oldCapacity + ", 扩容到了" + newCapacity);
+		System.out.println("size=" + oldCapacity + ", 扩容到了" + newCapacity);
 
 	}
 
@@ -90,6 +92,8 @@ public class ArrayList<T> extends AbstractList<T> {
 		}
 		elements[index] = element;
 		size++;
+		
+		
 	}
 
 	/**
@@ -119,19 +123,55 @@ public class ArrayList<T> extends AbstractList<T> {
 		}
 		// list的长度 减一
 		size--;
+
+		trim();
 		return old;
+
+	}
+
+	/**
+	 * 缩容的方法
+	 */
+	private void trim() {
+		// 数组真实的长度
+		int capacity = elements.length;
+		// 缩容为原来的一半
+		int newCapacity = capacity >> 1;
+		// 目前 数组的长度的 capacity <=DEFAULT_CAPACITY 这句话就是如果上次缩容 以后数组的大小 小于DEFAULT_CAPACITY
+		// 下次如果有剩余的空间, 就是空着也不缩容
+		if (size >= (newCapacity) || capacity <= DEFAULT_CAPACITY) {
+			// 不需要去缩容的
+			return;
+		}
+
+		// int newCapacity = capacity >> 1; 如果把这句话 写到这里的话 ,
+		// size >= (newCapacity) 这里就会多一步运算
+
+		T[] newElements = (T[]) new Object[newCapacity];
+		for (int i = 0; i < size; i++) {
+			newElements[i] = elements[i];
+		}
+		// 原来的数组 重新指向新的数组
+		elements = newElements;
+
+		System.out.println("原来的容量为===" + capacity + "缩容为====" + newCapacity);
 
 	}
 
 	/**
 	 * 清空数组里面的内容
 	 */
+
 	public void clear() {
 		// 使用 泛型后, 要注意内存的管理
 		for (int i = 0; i < size; i++) {
 			elements[i] = null;
 		}
 		size = 0;
+		// 清空完数据以后把数组 缩容
+		// 把数组 elements 重新复制 达到缩容的目的
+		elements = (T[]) new Object[DEFAULT_CAPACITY];
+
 	}
 
 	@Override

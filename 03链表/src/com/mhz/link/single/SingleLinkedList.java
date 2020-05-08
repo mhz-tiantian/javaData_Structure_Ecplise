@@ -1,7 +1,16 @@
-package com.mhz.link;
+package com.mhz.link.single;
 
-@SuppressWarnings("hiding")
-public class LinkedList<T> extends AbstractList<T> {
+import com.mhz.link.AbstractList;
+
+/**
+ * 单项链表 没有头节点的
+ * 
+ * @author mahaizhen
+ *
+ * @date 2020年5月8日
+ */
+@SuppressWarnings("unchecked")
+public class SingleLinkedList<T> extends AbstractList<T> {
 
 	// 第一个节点 这是没有头节点的 第一个节点 就有元素了
 	Node<T> first;
