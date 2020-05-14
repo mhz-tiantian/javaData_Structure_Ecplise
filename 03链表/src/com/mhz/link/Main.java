@@ -1,5 +1,7 @@
 package com.mhz.link;
 
+import com.mhz.link.circle.CircleDoubleLinkedList;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -24,8 +26,38 @@ public class Main {
 //		System.out.println("替换后的元素为" + old);
 //		arrayList.toString();
 
-		
-		testTrim();
+//		testTrim();
+
+		yuesefu(2);
+	}
+
+	/**
+	 * 约瑟夫 问题
+	 */
+	private static void yuesefu(int sum) {
+		CircleDoubleLinkedList<Integer> list = new CircleDoubleLinkedList<Integer>();
+		for (int i = 1; i <= 8; i++) {
+			list.add(i);
+
+		}
+		// 当前的节点, 指向头节点
+		list.reset();
+		while (!list.isEmpty()) {
+			int index = sum;
+			while (index-- > 0) {
+				list.next();
+			}
+			Integer remove = list.remove();
+			System.out.println("出栈的顺序为" + remove);
+		}
+
+//		while (!list.isEmpty()) {
+//			list.next();
+//			list.next();
+//			Integer remove = list.remove();
+//			System.out.println("出栈的顺序为" + remove);
+//		}
+
 	}
 
 	/**

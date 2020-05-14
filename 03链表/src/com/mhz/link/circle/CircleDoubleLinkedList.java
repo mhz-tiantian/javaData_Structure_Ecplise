@@ -2,6 +2,7 @@ package com.mhz.link.circle;
 
 import com.mhz.link.AbstractList;
 import com.mhz.link.circle.CircleDoubleLinkedList.Node;
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
 
 /**
  * 循环双向链表
@@ -13,10 +14,13 @@ import com.mhz.link.circle.CircleDoubleLinkedList.Node;
 public class CircleDoubleLinkedList<T> extends AbstractList<T> {
 
 	// 第一个节点
-	Node<T> first;
+	private Node<T> first;
 
 	// 最后的节点
-	Node<T> last;
+	private Node<T> last;
+
+	// 指向当前的节点
+	private Node<T> current;
 
 	static class Node<T> {
 		// 元素的值
@@ -44,6 +48,47 @@ public class CircleDoubleLinkedList<T> extends AbstractList<T> {
 			return sb.toString();
 		}
 
+	}
+
+	/**
+	 * 让current 执行头节点 frist
+	 */
+	public void reset() {
+		current = first;
+
+	}
+
+	/**
+	 * 让current 返回走一步
+	 * 
+	 * @return
+	 */
+	public T next() {
+		if (current == null) {
+			return null;
+		}
+		current = current.next;
+		return current.element;
+	}
+
+	/**
+	 * 移除当前Current 节点 , 删除完以后 当前的current节点,指向他的下一个节点
+	 * 
+	 * @return
+	 */
+	public T remove() {
+		if (current == null) {
+			return null;
+		}
+		Node<T> next = current.next;
+		T element = remove(current);
+		if (size == 0) {
+			current = null;
+		} else {
+			current = next;
+		}
+		// 删除当前的节点
+		return element;
 	}
 
 	@Override
@@ -109,6 +154,9 @@ public class CircleDoubleLinkedList<T> extends AbstractList<T> {
 			Node<T> addNode = new Node<>(prev, element, next);
 			prev.next = addNode;
 			next.prev = addNode;
+			if (index == 0) { // 添加第一个节点的时候 让first节点指向新添加的节点
+				first = addNode;
+			}
 
 		}
 		size++;
@@ -118,34 +166,37 @@ public class CircleDoubleLinkedList<T> extends AbstractList<T> {
 	@Override
 	public T remove(int index) {
 		checkIndex(index);
-		Node<T> currentNode = first;
-		// 只有一个元素的时候删除节点
+		return remove(node(index));
+	}
+
+	private T remove(Node<T> node) {
 		if (size == 1) {
 			first = null;
 			last = null;
 		} else {
-			currentNode = node(index);
-			Node<T> prev = currentNode.prev;
-			Node<T> next = currentNode.next;
+			Node<T> prev = node.prev;
+			Node<T> next = node.next;
 			prev.next = next;
 			next.prev = prev;
 			// 这也是很重要的 因为CircleDoubleLinkedList中, 如果不添加这句话的话, first还是指向原来的 节点
-			if (currentNode == first) { // 删除第一个的时候
+			if (node == first) { // 删除第一个的时候
 				first = next;
 			}
 			// 下面 这个同上面一个原理
-			if (currentNode == last) {// 删除最后一个的时候
+			if (node == last) {// 删除最后一个的时候
 				last = prev;
 			}
 		}
 		size--;
-		return currentNode.element;
+		return node.element;
+
 	}
 
 	@Override
 	public void clear() {
 		size = 0;
 		first = null;
+		last = null;
 	}
 
 	/**
