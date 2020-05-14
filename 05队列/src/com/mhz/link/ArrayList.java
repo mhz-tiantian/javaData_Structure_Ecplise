@@ -27,7 +27,7 @@ public class ArrayList<T> extends AbstractList<T> {
 		// 就是oldCapacity*0.5 然后在加上oldCapacity
 		int newCapacity = oldCapacity + (oldCapacity >> 1);
 		T[] newElements = (T[]) new Object[newCapacity];
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 0; i < size; i++) {
 			// 把elements中的元素 赋值到新的数组里面
 			newElements[i] = elements[i];
 		}

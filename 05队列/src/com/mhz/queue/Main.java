@@ -1,24 +1,67 @@
 package com.mhz.queue;
 
+import com.mhz.circle.CircleDeque;
+import com.mhz.circle.CircleQueue;
 import com.mhz.link.CircleDoubleLinkedList;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		testDoubleQueue();
+//		testDoubleQueue();
 //		testDoubleQueue2();
 
+//		circleTest();
+
+		circleTest3();
 	}
-	
-	private static void testDoubleQueue2() {
-		CircleDoubleLinkedList<Integer> queue = new CircleDoubleLinkedList<>();
-		queue.add(0,22);
-		queue.add(0,33);
-		System.out.println("出队列的顺序为" +queue.toString());
+
+	private static void circleTest3() {
+		CircleDeque<Integer> queue = new CircleDeque<Integer>();
+		for (int i = 0; i < 10; i++) {
+			queue.enQueueFront(i + 1);
+			queue.enQueueReal(i + 100);
+		}
+
+		for (int i = 0; i < 3; i++) {
+			queue.deQueueFront();
+			queue.deQueueReal();
+		}
+		queue.enQueueFront(11);
+		queue.enQueueFront(12);
+		queue.toString();
+		while (!queue.isEmpty()) {
+			System.out.println(queue.deQueueFront());
+		}
 
 	}
-	
+
+	private static void circleTest() {
+		CircleQueue<Integer> queue = new CircleQueue<Integer>();
+		for (int i = 0; i < 10; i++) {
+			queue.enQueue(i);
+		}
+
+		for (int i = 0; i < 5; i++) {
+			queue.deQueue();
+		}
+		for (int i = 15; i < 23; i++) {
+			queue.enQueue(i);
+		}
+		queue.toString();
+		while (!queue.isEmpty()) {
+			System.out.println(queue.deQueue());
+		}
+
+	}
+
+	private static void testDoubleQueue2() {
+		CircleDoubleLinkedList<Integer> queue = new CircleDoubleLinkedList<>();
+		queue.add(0, 22);
+		queue.add(0, 33);
+		System.out.println("出队列的顺序为" + queue.toString());
+
+	}
 
 	private static void testDoubleQueue() {
 		DoubleQueue<Integer> queue = new DoubleQueue<>();
