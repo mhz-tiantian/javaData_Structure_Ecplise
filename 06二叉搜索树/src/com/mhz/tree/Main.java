@@ -30,7 +30,6 @@ public class Main {
 			boolean visitor(Integer element) {
 				System.out.print(element+"\t");
 				if (element.equals(new Integer(9)) ) {
-					System.out.println("==9");
 					return true;
 				}else {
 					return false;
@@ -38,6 +37,7 @@ public class Main {
 			
 			}
 		});
+		System.out.println();
 		System.out.println("=====中序遍历=====");
 		trees.inorder(new Visitor<Integer>() {
 
@@ -55,6 +55,7 @@ public class Main {
 			}
 		});;
 
+		System.out.println();
 		System.out.println("=====后序遍历=====");
 		trees.postorder(new Visitor<Integer>() {
 

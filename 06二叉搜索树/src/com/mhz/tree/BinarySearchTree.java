@@ -124,13 +124,12 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
 	}
 
-	private void postorderTraversal(Node<E> node, Visitor<E> visitor) {
-		System.out.println("postorder" + visitor.stop);
+	private void postorder(Node<E> node, Visitor<E> visitor) {
 		if (node == null || visitor.stop) {
 			return;
 		}
-		postorderTraversal(node.left);
-		postorderTraversal(node.right);
+		postorder(node.left,visitor);
+		postorder(node.right,visitor);
 		
 		if (visitor.stop) {
 			return;
@@ -149,7 +148,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 			return;
 
 		}
-		postorderTraversal(root, visitor);
+		postorder(root, visitor);
 	}
 
 	/**
@@ -170,17 +169,16 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
 	}
 
-	private void inorderTraversal(Node<E> node, Visitor<E> visitor) {
-		System.out.println("inorder" + visitor.stop);
+	private void inorder(Node<E> node, Visitor<E> visitor) {
 		if (node == null || visitor.stop) {
 			return;
 		}
-		inorderTraversal(node.left);
+		inorder(node.left,visitor);
 		if (visitor.stop) {
 			return;
 		}
 		visitor.stop = visitor.visitor(node.element);
-		inorderTraversal(node.right);
+		inorder(node.right,visitor);
 
 	}
 
@@ -188,7 +186,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		if (visitor == null) {
 			return;
 		}
-		inorderTraversal(root, visitor);
+		inorder(root, visitor);
 
 	}
 
@@ -215,16 +213,15 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		preorderTraversal(parent.right);
 	}
 
-	private void preorderTraversal(Node<E> parent, Visitor<E> visitor) {
-		System.out.println("preorder" + visitor.stop);
+	private void preorder(Node<E> parent, Visitor<E> visitor) {
 		// 递归结束的条件
 		if (parent == null || visitor.stop) {
 			return;
 		}
 
 		visitor.stop = visitor.visitor(parent.element);
-		preorderTraversal(parent.left);
-		preorderTraversal(parent.right);
+		preorder(parent.left,visitor);
+		preorder(parent.right,visitor);
 	}
 
 	public void preorder(Visitor<E> visitor) {
@@ -232,7 +229,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		if (visitor == null) {
 			return;
 		}
-		preorderTraversal(root, visitor);
+		preorder(root, visitor);
 
 	}
 
