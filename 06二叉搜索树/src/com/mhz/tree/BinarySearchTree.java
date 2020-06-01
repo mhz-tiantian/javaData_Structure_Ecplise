@@ -30,6 +30,8 @@ import com.mhz.tree.printer.BinaryTreeInfo;
  * 
  *       完全二叉树的定义:就是在满的基础上, 除去最后一层, 不是满的以外 , 其他的层 也还是必须是满的, 在最后一层的节点, 都连续集中在最左边,
  *       就是完全二叉树
+ *       
+ *       完全二叉树: 叶子节点只会出现最后2层, 且最后一层的叶子节点 都靠左对齐
  */
 public class BinarySearchTree<E> implements BinaryTreeInfo {
 
@@ -59,14 +61,22 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 			Node<E> current = queue.poll();
 			Node<E> left = current.left;
 			Node<E> right = current.right;
+			if (leaf&&!current.isLeaf()) {
+				return false;
+				
+			}
 			if (left != null) { // 左不等於空
 				queue.offer(left);
 			} else if (right != null) {
 				// left==null && right!=null
 				return false;
 			}
-			if (right != null) {
+			if (right != null) { // 右边不为空
 				queue.offer(right);
+			}else {
+				// left!=null &&right==null 
+				// left ==null && right==null
+				leaf=true;
 			}
 
 		}
@@ -77,6 +87,9 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 	/**
 	 * 
 	 * @return 返回是不是一个完全二叉树
+	 * 
+	 * 
+	 * 完全二叉树的特点, 1.叶子
 	 */
 	public boolean isComplete() {
 		// 如果是一个空树, 就返回一个false

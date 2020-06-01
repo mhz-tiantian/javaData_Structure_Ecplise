@@ -1,6 +1,5 @@
 package com.mhz.tree;
 
-import com.mhz.tree.BinarySearchTree.Visitor;
 import com.mhz.tree.printer.BinaryTrees;
 
 public class Main {
