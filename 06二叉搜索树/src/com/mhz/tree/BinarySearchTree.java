@@ -12,6 +12,24 @@ import com.mhz.tree.printer.BinaryTreeInfo;
  * @author mahaizhen
  *
  * @date 2020年5月14日
+ * 
+ *       满二叉树的定义 : 高度为h，由2^h-1个节点构成的二叉树称为满二叉树
+ * 
+ *       满二叉树的定义: 其实就是最后的节点全部是叶子节点, 然后其他的层 都有二个子节点
+ * 
+ * 
+ * 
+ * 
+ * 
+ *       完全二叉树的定义:
+ * 
+ *       完全二叉树是由满二叉树而引出来的，若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1)
+ *       的结点数都达到最大个数(即1~h-1层为一个满二叉树)，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。
+ * 
+ *       堆一般都是用完全二叉树来实现的。
+ * 
+ *       完全二叉树的定义:就是在满的基础上, 除去最后一层, 不是满的以外 , 其他的层 也还是必须是满的, 在最后一层的节点, 都连续集中在最左边,
+ *       就是完全二叉树
  */
 public class BinarySearchTree<E> implements BinaryTreeInfo {
 
@@ -22,6 +40,144 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
 	public BinarySearchTree(Comparator<E> comparator) {
 		this.comparator = comparator;
+	}
+
+	/**
+	 * 
+	 * @return 返回是不是一个完全二叉树
+	 */
+	public boolean isComplete2() {
+		// 如果是一个空树, 就返回一个false
+		if (root == null)
+			return false;
+		Queue<Node<E>> queue = new LinkedList<>();
+		// 先添加根节点
+		queue.offer(root);
+		// 下次遍历的时候 所有的节点 都是叶子节点
+		boolean leaf = false;
+		while (!queue.isEmpty()) {
+			Node<E> current = queue.poll();
+			Node<E> left = current.left;
+			Node<E> right = current.right;
+			if (left != null) { // 左不等於空
+				queue.offer(left);
+			} else if (right != null) {
+				// left==null && right!=null
+				return false;
+			}
+			if (right != null) {
+				queue.offer(right);
+			}
+
+		}
+
+		return true;
+	}
+
+	/**
+	 * 
+	 * @return 返回是不是一个完全二叉树
+	 */
+	public boolean isComplete() {
+		// 如果是一个空树, 就返回一个false
+		if (root == null)
+			return false;
+		Queue<Node<E>> queue = new LinkedList<>();
+		// 先添加根节点
+		queue.offer(root);
+		// 下次遍历的时候 所有的节点 都是叶子节点
+		boolean leaf = false;
+		while (!queue.isEmpty()) {
+			Node<E> current = queue.poll();
+			Node<E> left = current.left;
+			Node<E> right = current.right;
+
+			// 如果leaf 为true, 当前的节点是叶子节点
+			if (leaf && !current.isLeaf()) {
+				return false;
+			}
+
+			if (current.hasTwoChildren()) {
+				queue.offer(left);
+				queue.offer(right);
+			} else if (left == null && right != null) {
+				return false;
+
+			} else {
+				leaf = true;
+				if (left != null) {
+					queue.offer(left);
+				}
+			}
+
+		}
+
+		return true;
+	}
+
+	/**
+	 * 返回二叉树的高度
+	 * 
+	 * @return
+	 */
+	public int height() {
+		return height(root);
+	}
+
+	/**
+	 * 返回二叉树的高度
+	 * 
+	 * @return
+	 */
+	public int height2() {
+		if (root == null)
+			return 0;
+		// 使用层序遍历的方法 来计算层序遍历的方法
+
+		int height = 0;
+		Queue<Node<E>> queue = new LinkedList<>();
+		// 先把root节点 入队列
+		queue.offer(root);
+		int levelSize = 1; // 每层节点的数量
+		while (!queue.isEmpty()) {
+			Node<E> current = queue.poll();
+			// 减少一个 size--
+			levelSize--;
+
+			Node<E> left = current.left;
+			Node<E> right = current.right;
+			if (left != null) {
+				queue.offer(left);
+			}
+			if (right != null) {
+				queue.offer(right);
+			}
+
+			if (levelSize == 0) {
+				// 每层遍历完, 把LeverSize的数量重置下
+				levelSize = queue.size();
+				height++;
+			}
+
+		}
+
+		return height;
+
+	}
+
+	/**
+	 * 获取某个节点的高度
+	 * 
+	 * @param node
+	 * @return
+	 */
+	private int height(Node<E> node) {
+		if (node == null) {
+			return 0;
+		}
+		int height = 1 + Math.max((height(node.right)), height(node.left));
+		return height;
+
 	}
 
 	// 二叉树的根节点
@@ -128,9 +284,9 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		if (node == null || visitor.stop) {
 			return;
 		}
-		postorder(node.left,visitor);
-		postorder(node.right,visitor);
-		
+		postorder(node.left, visitor);
+		postorder(node.right, visitor);
+
 		if (visitor.stop) {
 			return;
 		}
@@ -173,12 +329,12 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		if (node == null || visitor.stop) {
 			return;
 		}
-		inorder(node.left,visitor);
+		inorder(node.left, visitor);
 		if (visitor.stop) {
 			return;
 		}
 		visitor.stop = visitor.visitor(node.element);
-		inorder(node.right,visitor);
+		inorder(node.right, visitor);
 
 	}
 
@@ -220,8 +376,8 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		}
 
 		visitor.stop = visitor.visitor(parent.element);
-		preorder(parent.left,visitor);
-		preorder(parent.right,visitor);
+		preorder(parent.left, visitor);
+		preorder(parent.right, visitor);
 	}
 
 	public void preorder(Visitor<E> visitor) {
@@ -345,6 +501,26 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		public Node(E element, Node<E> parent) {
 			this.element = element;
 			this.parent = parent;
+		}
+
+		/**
+		 * 是否是 叶子节点(叶子节点就是 左右节点都是null的节点)
+		 * 
+		 * @return
+		 */
+		public boolean isLeaf() {
+			return right == null && left == null;
+
+		}
+
+		/**
+		 * 返回是不是有 二个子节点
+		 * 
+		 * @return
+		 */
+		public boolean hasTwoChildren() {
+			return right != null && left != null;
+
 		}
 
 	}
