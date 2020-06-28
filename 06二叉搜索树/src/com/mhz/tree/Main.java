@@ -10,6 +10,7 @@ public class Main {
 		BinarySearchTree<Integer> trees = new BinarySearchTree<>();
 		for (int i = 0; i < treeNodes.length; i++) {
 			trees.add(treeNodes[i]);
+			
 		}
 		BinaryTrees.print(trees);
 //		System.out.println();
@@ -91,8 +92,30 @@ public class Main {
 
 	}
 
+	
+	static void testTreeRemove() {
+		Integer[] treeNodes = { 7, 4, 9, 2, 5, 8, 11, 3, 12, 1 };
+
+		BinarySearchTree<Integer> trees = new BinarySearchTree<>();
+		for (int i = 0; i < treeNodes.length; i++) {
+			trees.add(treeNodes[i]);
+			
+		}
+		System.out.println();
+		BinaryTrees.print(trees);
+//		trees.remove(1);
+//		trees.remove(3);
+		trees.remove(4);
+		System.out.println();
+		BinaryTrees.print(trees);
+
+
+
+	}
+	
+	
 	public static void main(String[] args) {
-		testTree();
+		testTreeRemove();
 	}
 
 }

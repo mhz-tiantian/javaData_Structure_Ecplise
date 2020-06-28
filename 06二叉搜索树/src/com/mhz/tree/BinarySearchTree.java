@@ -30,9 +30,10 @@ import com.mhz.tree.printer.BinaryTreeInfo;
  * 
  *       完全二叉树的定义:就是在满的基础上, 除去最后一层, 不是满的以外 , 其他的层 也还是必须是满的, 在最后一层的节点, 都连续集中在最左边,
  *       就是完全二叉树
- *       
+ * 
  *       完全二叉树: 叶子节点只会出现最后2层, 且最后一层的叶子节点 都靠左对齐
  */
+@SuppressWarnings("unchecked")
 public class BinarySearchTree<E> implements BinaryTreeInfo {
 
 	private Comparator<E> comparator;
@@ -42,6 +43,59 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
 	public BinarySearchTree(Comparator<E> comparator) {
 		this.comparator = comparator;
+	}
+
+	/**
+	 * 返回后继节点
+	 * 
+	 * @return
+	 */
+
+	private Node<E> successor(Node<E> node) {
+		if (node == null) {
+			return node;
+		}
+		Node<E> s = node.right;
+		if (s != null) {
+			while (s.left != null) {
+				s = node.left;
+			}
+			return s;
+		}
+		while (node.parent != null && node == node.parent.right) {
+			node = node.parent;
+		}
+		// node.parent==null;
+		// node== node.parent.left
+		return node.parent;
+
+	}
+
+	/**
+	 * @param node 当前节点
+	 * @return 返回当前节点 的前驱节点
+	 */
+
+	private Node<E> predecessor(Node<E> node) {
+		if (node == null) {
+			return node;
+		}
+		Node<E> p = node.left;
+		// 如果左子树, 不是null, 从左子树里面找到 最右的那个节点, 前驱节点, 在左子树中
+		if (p != null) {
+			while (p.right != null) {
+				p = p.right;
+			}
+			return p;
+		}
+
+		// 说明 左子树为null, 那就去找父节点, 找到当前节点在父节点中, 的右子树里面, 结束
+		while (node.parent != null && node == node.parent.left) {
+			node = node.parent;
+		}
+		// node.parent==null;
+		// node== node.parent.right
+		return node.parent;
 	}
 
 	/**
@@ -61,9 +115,9 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 			Node<E> current = queue.poll();
 			Node<E> left = current.left;
 			Node<E> right = current.right;
-			if (leaf&&!current.isLeaf()) {
+			if (leaf && !current.isLeaf()) {
 				return false;
-				
+
 			}
 			if (left != null) { // 左不等於空
 				queue.offer(left);
@@ -73,10 +127,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 			}
 			if (right != null) { // 右边不为空
 				queue.offer(right);
-			}else {
-				// left!=null &&right==null 
+			} else {
+				// left!=null &&right==null
 				// left ==null && right==null
-				leaf=true;
+				leaf = true;
 			}
 
 		}
@@ -89,7 +143,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 	 * @return 返回是不是一个完全二叉树
 	 * 
 	 * 
-	 * 完全二叉树的特点, 1.叶子
+	 *         完全二叉树的特点, 1.叶子
 	 */
 	public boolean isComplete() {
 		// 如果是一个空树, 就返回一个false
@@ -429,6 +483,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 				// ======> 这个方向
 				node = node.right;
 			} else if (cmp < 0) {
+				// <=======这个方向
 				node = node.left;
 			} else {
 				// 如果两个值相等的话, 把新的值来覆盖旧的值
@@ -464,12 +519,89 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 	}
 
 	/**
-	 * 移除元素
+	 * 移除元素 删除
 	 * 
 	 * @param element
 	 */
 	public void remove(E element) {
 
+		remove(node(element));
+
+	}
+
+	private void remove(Node<E> node) {
+		if (node == null) {
+			return;
+		}
+		// 删除的时候 size 要减少
+		size--;
+		// 度为2 的节点
+		if (node.hasTwoChildren()) {
+			// 找到前驱/或者后继 的节点
+			Node<E> sNode = predecessor(node);
+			// 用后继节点的值覆盖 度为2节点的值
+			node.element = sNode.element;
+			// 删除后继节点
+			node = sNode;
+		}
+		// 删除node 节点即可( node 必然是度为1,或者0的节点)
+		Node<E> replaceElement = node.left != null ? node.left : node.right;
+		if (replaceElement != null) {
+			// 说明 node 是度为1 的节点
+
+			// 更改parent
+			replaceElement.parent = node.parent;
+			// 更换指向(更换指针)
+			// 更换parent的left/right的指向
+			if (node.parent == null) {
+				// node度为1 , 并且是根节点
+				root = replaceElement;
+			} else if (node == node.parent.left) {
+				// node是父节点的left 节点
+				node.parent.left = replaceElement;
+			} else {
+				// node == node.parent.right
+				// node 是父节点的 right节点
+				node.parent.right = replaceElement;
+			}
+
+		} else if (node.parent == null) {
+			// 说明node 为叶子节点(度为0) node.parent == null 说明Node 是根节点
+			root = null;
+		} else {
+			// 说明 node 是叶子节点 但是不是跟节点
+			if (node == node.parent.left) {
+				node.parent.left = null;
+			} else {
+				node.parent.right = null;
+			}
+
+		}
+
+	}
+
+	/**
+	 * 根据元素的值, 拿到 存放值的节点
+	 * 
+	 * @param element
+	 * @return
+	 */
+	private Node<E> node(E element) {
+		Node<E> node = root;
+		while (node != null) {
+			int cmp = compare(element, node.element);
+			if (cmp == 0) {
+				return node;
+			} else if (cmp > 0) {
+				// element 这个值 比node.element大
+				node = node.right;
+			} else {
+				// element 这个值 比node.element小
+				node = node.left;
+			}
+
+		}
+		return null;
 	}
 
 	/**
@@ -557,6 +689,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
 	@Override
 	public Object string(Object node) {
+
 		Node<E> current = (Node<E>) node;
 		if (current.parent == null) {
 			return current.element + "_p(" + null + ")";
