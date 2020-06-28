@@ -71,7 +71,7 @@ public class RBTree<E> extends BBST<E> {
 		if (isRed(node)) {
 			return;
 		}
-		// 用于替代删除节点是红色的节点的话,
+		// 用于替代删除节点是红色的节点的话, 这里不需要把指针指向替换的节点上, 因为这是已经删除过的, (意思就是这些删除的线都是连接好的)
 		if (isRed(replaceNode)) {
 			// 把当前的节点 染成黑色, 单独分离成一个单独的节点
 			black(node);
@@ -84,6 +84,87 @@ public class RBTree<E> extends BBST<E> {
 		if (parent == null) {
 			// 删除的节点是根节点
 			return;
+		}
+		// 删除的节点是黑色的节点, 在b树中就会产生[下溢]的问题
+		// 去找兄弟节点, 去接一个
+		// 怎么接 ?
+		// 1. 如果兄弟节点可以借(至少含有一个红色的子节点) 才可以接
+		// 1.1 进行旋转操作
+		// 1.2 旋转之后的中心节点继承parent的颜色
+		// 1.3 旋转之后的左右节点染为Black
+
+		// node.isLeftChild() 这句话是为了, 考虑到 这次的下溢 导致父节点的下溢(而父节点的线 我们是没有截断的)
+		boolean left = parent.left == null || node.isLeftChild();
+		Node<E> sibling = left ? parent.right : parent.left;
+		if (left) { // 被删除的节点在左边, 兄弟节点在右边
+			// 如果兄弟节点是红色, 把兄弟节点染成黑色, 父节点染成红色, 然后让
+			if (isRed(sibling)) {
+				black(sibling);
+				red(parent);
+				rotateLeft(parent);
+				sibling = parent.right;
+			}
+			// 到这里兄弟节点必然是黑色
+			if (isBlack(sibling.left) && isBlack(sibling.right)) {
+				// 兄弟节点的子节点没有红色的子节点. 父节点要向下跟兄弟节点合并
+				boolean parentBlack=isBlack(parent);
+				black(parent);
+				red(sibling);
+				if (parentBlack) {
+					afterRemove(parent, null);
+				}
+
+			}else {
+				// 兄弟节点的子节点, 有红色的子节点, 可以借给我们
+				// 兄弟节点的左边的子节点是黑色, 兄弟要先旋转
+				if (isBlack(sibling.right)) {
+					// 先进行旋转, 然后成为下面的两种情况
+					rotateRight(sibling);
+					// 然后把兄弟节点更新下
+					sibling=parent.right;
+				}
+				// 让兄弟节点, 继承父节点的颜色
+				color(sibling, colorOf(parent));
+				black(sibling.right);
+				black(parent);
+				rotateLeft(parent);
+			}
+			
+
+		} else { // 被删除的节点在右边, 兄弟节点在左边
+			// 如果兄弟节点是红色, 把兄弟节点染成黑色, 父节点染成红色, 然后让
+			if (isRed(sibling)) {
+				black(sibling);
+				red(parent);
+				rotateRight(parent);
+				sibling = parent.left;
+			}
+			// 到这里兄弟节点必然是黑色
+			if (isBlack(sibling.left) && isBlack(sibling.right)) {
+				// 兄弟节点的子节点没有红色的子节点. 父节点要向下跟兄弟节点合并
+				boolean parentBlack=isBlack(parent);
+				black(parent);
+				red(sibling);
+				if (parentBlack) {
+					afterRemove(parent, null);
+				}
+
+			}else {
+				// 兄弟节点的子节点, 有红色的子节点, 可以借给我们
+				// 兄弟节点的左边的子节点是黑色, 兄弟要先旋转
+				if (isBlack(sibling.left)) {
+					// 先进行旋转, 然后成为下面的两种情况
+					rotateLeft(sibling);
+					// 然后把兄弟节点更新下
+					sibling=parent.left;
+				}
+				// 让兄弟节点, 继承父节点的颜色
+				color(sibling, colorOf(parent));
+				black(sibling.left);
+				black(parent);
+				rotateRight(parent);
+			}
+
 		}
 
 	}

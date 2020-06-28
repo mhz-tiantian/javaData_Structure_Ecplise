@@ -94,6 +94,7 @@ public class BBST<E> extends BST<E> {
 
 	}
 
+	// 这个方法主要就是维护旋转之后的父节点的属性
 	protected void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
 		// 让 parent 称为这个子树的根节点
 		if (grand.isLeftChild()) {
