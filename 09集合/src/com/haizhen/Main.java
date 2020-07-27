@@ -1,11 +1,11 @@
 package com.haizhen;
 
-import com.haizhen.set.LinkedSet;
 import com.haizhen.set.Set;
 import com.haizhen.set.Set.Visitor;
 import com.haizhen.set.TreeSet;
 
 public class Main {
+	
 
 	public static void main(String[] args) {
 

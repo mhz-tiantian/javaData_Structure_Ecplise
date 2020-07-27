@@ -1,4 +1,4 @@
-package com.mhz.tree;
+package com.haizhen.tree;
 
 import java.util.Comparator;
 
@@ -54,7 +54,7 @@ public class BST<E> extends BinaryTree<E> {
 	 * 
 	 * @param node 真正被删除的节点
 	 */
-	protected void afterRemove(Node<E> node) {
+	protected void afterRemove(Node<E> node, Node<E> replaceNode) {
 	};
 
 	/**
@@ -136,6 +136,7 @@ public class BST<E> extends BinaryTree<E> {
 		Node<E> replaceElement = node.left != null ? node.left : node.right;
 		if (replaceElement != null) {
 			// 说明 node 是度为1 的节点
+
 			// 更改parent
 			replaceElement.parent = node.parent;
 			// 更换指向(更换指针)
@@ -153,12 +154,12 @@ public class BST<E> extends BinaryTree<E> {
 			}
 
 			// 删除以后的操作
-			afterRemove(replaceElement);
+			afterRemove(node, replaceElement);
 		} else if (node.parent == null) {
 			// 说明node 为叶子节点(度为0) node.parent == null 说明Node 是根节点
 			root = null;
 			// 删除以后的操作
-			afterRemove(node);
+			afterRemove(node, null);
 		} else {
 			// 说明 node 是叶子节点 但是不是跟节点
 			if (node == node.parent.left) {
@@ -167,7 +168,7 @@ public class BST<E> extends BinaryTree<E> {
 				node.parent.right = null;
 			}
 			// 删除以后的操作
-			afterRemove(node);
+			afterRemove(node, null);
 
 		}
 
