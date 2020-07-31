@@ -171,12 +171,12 @@ public class TreeMap<K, V> implements Map<K, V> {
 			}
 
 			// 删除以后的操作
-			afterRemove(node, replaceElement);
+			afterRemove(replaceElement);
 		} else if (node.parent == null) {
 			// 说明node 为叶子节点(度为0) node.parent == null 说明Node 是根节点
 			root = null;
 			// 删除以后的操作
-			afterRemove(node, null);
+			afterRemove(node);
 		} else {
 			// 说明 node 是叶子节点 但是不是跟节点
 			if (node == node.parent.left) {
@@ -185,7 +185,7 @@ public class TreeMap<K, V> implements Map<K, V> {
 				node.parent.right = null;
 			}
 			// 删除以后的操作
-			afterRemove(node, null);
+			afterRemove(node);
 
 		}
 
@@ -259,13 +259,9 @@ public class TreeMap<K, V> implements Map<K, V> {
 	/**
 	 * 因为删除的节点, 只能是叶子节点(在内存中真正销毁内存的 )
 	 */
-	protected void afterRemove(Node<K, V> node, Node<K, V> replaceNode) {
-		// 删除的是红色的节点, 不做任何的处理
-		if (isRed(node)) {
-			return;
-		}
+	protected void afterRemove(Node<K, V> node) {
 		// 用于替代删除节点是红色的节点的话, 这里不需要把指针指向替换的节点上, 因为这是已经删除过的, (意思就是这些删除的线都是连接好的)
-		if (isRed(replaceNode)) {
+		if (isRed(node)) {
 			// 把当前的节点 染成黑色, 单独分离成一个单独的节点
 			black(node);
 			return;
@@ -304,7 +300,7 @@ public class TreeMap<K, V> implements Map<K, V> {
 				black(parent);
 				red(sibling);
 				if (parentBlack) {
-					afterRemove(parent, null);
+					afterRemove(parent);
 				}
 
 			} else {
@@ -338,7 +334,7 @@ public class TreeMap<K, V> implements Map<K, V> {
 				black(parent);
 				red(sibling);
 				if (parentBlack) {
-					afterRemove(parent, null);
+					afterRemove(parent);
 				}
 
 			} else {

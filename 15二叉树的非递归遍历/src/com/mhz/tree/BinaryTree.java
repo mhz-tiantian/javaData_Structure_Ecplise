@@ -2,6 +2,7 @@ package com.mhz.tree;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 import com.mhz.tree.printer.BinaryTreeInfo;
 
@@ -295,128 +296,96 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 	}
 
 	/**
-	 * 后序遍历
-	 */
-	public void postorderTraversal() {
-		postorderTraversal(root);
-	}
-
-	private void postorderTraversal(Node<E> node) {
-		if (node == null) {
-			return;
-		}
-		postorderTraversal(node.left);
-		postorderTraversal(node.right);
-		System.out.println(node.element);
-
-	}
-
-	private void postorder(Node<E> node, Visitor<E> visitor) {
-		if (node == null || visitor.stop) {
-			return;
-		}
-		postorder(node.left, visitor);
-		postorder(node.right, visitor);
-
-		if (visitor.stop) {
-			return;
-		}
-		visitor.stop = visitor.visitor(node.element);
-
-	}
-
-	/**
-	 * 后序遍历,
+	 * 后序遍历, 先遍历左节点, 在遍历右节点 在遍历父节点,
 	 * 
-	 * @param visitor 使用者
 	 */
 	public void postorder(Visitor<E> visitor) {
-		if (visitor == null) {
-			return;
-
-		}
-		postorder(root, visitor);
-	}
-
-	/**
-	 * 中序遍历
-	 */
-	public void inorderTraversal() {
-		inorderTraversal(root);
-
-	}
-
-	private void inorderTraversal(Node<E> node) {
-		if (node == null) {
+		if (visitor == null || root == null) {
 			return;
 		}
-		inorderTraversal(node.left);
-		System.out.println(node.element);
-		inorderTraversal(node.right);
-
-	}
-
-	private void inorder(Node<E> node, Visitor<E> visitor) {
-		if (node == null || visitor.stop) {
-			return;
+		Stack<Node<E>> stack = new Stack<>();
+		stack.push(root);
+		// 记录上一次弹出访问的节点
+		Node<E> prev = null;
+		while (!stack.isEmpty()) {
+			Node<E> top = stack.peek();
+			if (top.isLeaf() || (prev != null && prev.parent == top)) {
+				prev = stack.pop();
+				if (visitor.visitor(prev.element)) {
+					return;
+				}
+			} else {
+				if (top.right != null) {
+					stack.push(top.right);
+				}
+				if (top.left != null) {
+					stack.push(top.left);
+				}
+			}
 		}
-		inorder(node.left, visitor);
-		if (visitor.stop) {
-			return;
-		}
-		visitor.stop = visitor.visitor(node.element);
-		inorder(node.right, visitor);
-
-	}
-
-	public void inorder(Visitor<E> visitor) {
-		if (visitor == null) {
-			return;
-		}
-		inorder(root, visitor);
 
 	}
 
 	/**
-	 * 先序遍历
-	 */
-	public void preorderTraversal() {
-		preorderTraversal(root);
-
-	}
-
-	/**
-	 * 前序遍历
+	 * 中序遍历 先遍历左节点, 在遍历父节点, 在遍历右节点
 	 * 
-	 * @param parent
+	 * @param visitor
 	 */
-	private void preorderTraversal(Node<E> parent) {
-		// 递归结束的条件
-		if (parent == null) {
+	public void inorder(Visitor<E> visitor) {
+		if (visitor == null || root == null) {
 			return;
 		}
-		System.out.println(parent.element);
-		preorderTraversal(parent.left);
-		preorderTraversal(parent.right);
-	}
+		Node<E> node = root;
+		Stack<Node<E>> stack = new Stack<>();
+		while (true) {
+			if (node != null) {
+				stack.push(node);
+				node = node.left;
+			} else {
+				if (stack.isEmpty()) {
+					return;
+				}
+				node = stack.pop();
+				if (visitor.visitor(node.element)) {
+					return;
+				}
+				node = node.right;
+			}
 
-	private void preorder(Node<E> parent, Visitor<E> visitor) {
-		// 递归结束的条件
-		if (parent == null || visitor.stop) {
-			return;
 		}
 
-		visitor.stop = visitor.visitor(parent.element);
-		preorder(parent.left, visitor);
-		preorder(parent.right, visitor);
 	}
 
+	/**
+	 * 前序遍历 父节点先遍历, 在遍历左节点,在遍历右节点
+	 * 
+	 * @param visitor
+	 */
 	public void preorder(Visitor<E> visitor) {
-		// 不用在递归的时候每次都判断了
-		if (visitor == null) {
+		if (visitor == null || root == null) {
 			return;
 		}
-		preorder(root, visitor);
+		Node<E> node = root;
+		Stack<Node<E>> stack = new Stack<>();
+		while (true) {
+			if (node != null) {
+				if (visitor.visitor(node.element)) {
+					return;
+				}
+				if (node.right != null) {
+					stack.push(node.right);
+				}
+				// node 一直想左走
+				node = node.left;
+			} else {
+				// 遍历结束 直接返回
+				if (stack.isEmpty()) {
+					return;
+				}
+				node = stack.pop();
+			}
+
+		}
 
 	}
 
@@ -517,21 +486,21 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 			return right != null && left != null;
 
 		}
-		
-		
+
 		/**
-		 *  返回兄弟节点
+		 * 返回兄弟节点
+		 * 
 		 * @return
 		 */
-		
-		public Node<E> sibling(){
+
+		public Node<E> sibling() {
 			if (isLeftChild()) {
 				return parent.right;
 			}
 			if (isRightChild()) {
 				return parent.left;
 			}
-			return  null;
+			return null;
 		}
 
 		@Override
@@ -547,8 +516,6 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
 	// Visitor 访问者
 	public static abstract class Visitor<E> {
-		// 遍历是否结束的标记
-		boolean stop;
 
 		abstract boolean visitor(E element);
 	}
