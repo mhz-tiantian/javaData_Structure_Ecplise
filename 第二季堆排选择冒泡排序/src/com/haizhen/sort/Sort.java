@@ -79,6 +79,10 @@ public abstract class Sort<E extends Comparable<E>> implements Comparable<Sort<E
 	}
 
 	private boolean isStable() {
+		if (this instanceof CountingSort) {
+			return true;
+			
+		}
 		if (this instanceof ShellSort) {
 			return false;
 		}

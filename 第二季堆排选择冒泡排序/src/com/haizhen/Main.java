@@ -2,6 +2,7 @@ package com.haizhen;
 
 import java.util.Arrays;
 
+import com.haizhen.sort.CountingSort;
 import com.haizhen.sort.Sort;
 import com.haizhen.sort.cmp.BubbleSort3;
 import com.haizhen.sort.cmp.HeapSort;
@@ -20,18 +21,19 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		Integer[] array = Integers.random(20000, 1, 20000);
+		Integer[] array = Integers.random(10, 1, 20);
 
 		testSorts(array, 
-				new HeapSort(),
-//				new BubbleSort3(), 
-//				new SelectionSort(),
-//				new InsertionSort1(),
-//				new InsertionSort2(),
-				new InsertionSort4(),
-				new MergeSort(),
-				new QuickSort(),
-				new ShellSort()
+				new CountingSort()
+//				new HeapSort(),
+////				new BubbleSort3(), 
+////				new SelectionSort(),
+////				new InsertionSort1(),
+////				new InsertionSort2(),
+//				new InsertionSort4(),
+//				new MergeSort(),
+//				new QuickSort(),
+//				new ShellSort()
 				);
 
 	}
