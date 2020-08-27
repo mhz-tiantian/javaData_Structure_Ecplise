@@ -9,6 +9,9 @@ package com.haizhen.sort;
  */
 public class CountingSort extends Sort<Integer> {
 
+	/**
+	 *  这个排序就可以对负整数进行排序
+	 */
 	@Override
 	protected void sort() {
 		int min = array[0];
