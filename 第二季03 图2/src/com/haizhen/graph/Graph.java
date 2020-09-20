@@ -11,6 +11,13 @@ package com.haizhen.graph;
  */
 public abstract class Graph<V, E> {
 
+	WeightManager<E> weightManager;
+
+	public Graph() {}
+	public Graph(WeightManager<E> weightManager) {
+		this.weightManager = weightManager;
+	}
+
 	/**
 	 * 
 	 * @return 返回边的数量
@@ -29,10 +36,10 @@ public abstract class Graph<V, E> {
 	 * @param v
 	 */
 	public abstract void addVertex(V v);
-	
-	
+
 	/**
-	 *  删除那个顶点
+	 * 删除那个顶点
+	 * 
 	 * @param v
 	 */
 	public abstract void removeVertex(V v);
@@ -55,11 +62,28 @@ public abstract class Graph<V, E> {
 	public abstract void addEdge(V from, V to, E weight);
 
 	/**
-	 *  删除边
+	 * 删除边
+	 * 
 	 * @param from
 	 * @param to
 	 */
 	public abstract void removeEdge(V from, V to);
+
+	// 广度优先搜索
+	public abstract void bfs(V begin, VertexVisitor<V> visitor); // 广度优先搜索
+
+	public interface WeightManager<E> { // 管理权重
+		int compare(E w1, E w2); // 比较权重
+
+		E add(E w1, E w2); // 权重相加
+
+		E zero();
+	}
+
+	// 搜索的对外的接口
+	public interface VertexVisitor<V> {
+		boolean visit(V v);
+	}
 
 	/**
 	 * 边的信息

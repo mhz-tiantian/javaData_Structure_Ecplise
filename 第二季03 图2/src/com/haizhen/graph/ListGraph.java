@@ -2,8 +2,11 @@ package com.haizhen.graph;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
 
 public class ListGraph<V, E> extends Graph<V, E> {
@@ -12,6 +15,11 @@ public class ListGraph<V, E> extends Graph<V, E> {
 	 */
 
 	public ListGraph() {
+
+	}
+
+	public ListGraph(WeightManager<E> weightManager) {
+		super(weightManager);
 	}
 
 	// 传入的V 与顶点类Vertex的映射
@@ -21,13 +29,18 @@ public class ListGraph<V, E> extends Graph<V, E> {
 	private Set<Edge<V, E>> edges = new HashSet<>();
 
 	public void print() {
+		System.out.println("[顶点]-------------------");
 		vertices.forEach((V v, Vertex<V, E> vertex) -> {
 			System.out.println(v);
+			System.out.println("out-----------");
+			System.out.println(vertex.outEdges);
+			System.out.println("int-----------");
+			System.out.println(vertex.inEdges);
 		});
-
-		edges.forEach((edge -> {
+		System.out.println("[边]-------------------");
+		edges.forEach((Edge<V, E> edge) -> {
 			System.out.println(edge);
-		}));
+		});
 	}
 
 	@Override
@@ -95,8 +108,30 @@ public class ListGraph<V, E> extends Graph<V, E> {
 
 	@Override
 	public void removeVertex(V v) {
-		Vertex<V, E> vertex = vertices.get(v);
-		
+		// 删除顶点
+		Vertex<V, E> vertex = vertices.remove(v);
+		if (vertex == null) {
+			// 说明删除的顶点不存在
+			return;
+		}
+		// 说明删除的顶点存在, 然后先去删除 从这个顶点出去的边
+		Iterator<Edge<V, E>> outIterator = vertex.outEdges.iterator();
+		while (outIterator.hasNext()) {
+			Edge<V, E> outEdge = outIterator.next();
+			// 获取outEdge 边的终点 从中删除遍历到的边
+			outEdge.to.inEdges.remove(outEdge);
+			outIterator.remove();
+			edges.remove(outEdge);
+		}
+
+		// 说明顶点存在, 删除所有进入这个顶点的边
+		Iterator<Edge<V, E>> inIterator = vertex.inEdges.iterator();
+		while (inIterator.hasNext()) {
+			Edge<V, E> edge = inIterator.next();
+			edge.from.outEdges.remove(edge);
+			inIterator.remove();
+			edges.remove(edge);
+		}
 
 	}
 
@@ -116,6 +151,49 @@ public class ListGraph<V, E> extends Graph<V, E> {
 		if (fromVertex.outEdges.remove(edge)) {
 			toVertex.inEdges.remove(edge);
 			edges.remove(edge);
+		}
+
+	}
+
+	// 广度优先搜索
+	@Override
+	public void bfs(V begin, VertexVisitor<V> visitor) {
+		// 如果传入的搜索的内容是null的话, 直接返回
+		if (visitor == null) {
+			return;
+		}
+		// 通过V begin 来拿到顶点的信息
+		Vertex<V, E> beginVertex = vertices.get(begin);
+		// 拿到的顶点信息为空, 直接返回了 , 不做处理
+		if (beginVertex == null) {
+			return;
+		}
+		// 已经选择过的顶点, 如果是已经选择过的 , 就直接去遍历下一个了
+		Set<Vertex<V, E>> selectedVertexs = new HashSet<>();
+		Queue<Vertex<V, E>> queue = new LinkedList<>();
+		// 先把从哪里开始遍历的顶点信息放入队列里面
+		queue.offer(beginVertex);
+		selectedVertexs.add(beginVertex);
+		while (!queue.isEmpty()) {
+			// 拿到顶点信息
+			Vertex<V, E> vertex = queue.poll();
+			// 这里要先进行打印出信息
+			if (visitor.visit(vertex.value)) {
+				// 如果返回true , 直接返回了, 不在进行 搜索了
+				return;
+			}
+
+			// 遍历从这个顶点出去的边
+			for (Edge<V, E> edge : vertex.outEdges) {
+				if (selectedVertexs.contains(edge.to)) {
+					// 如果有这个顶点了, 就直接去遍历下一个
+					continue;
+				}
+				// 这里肯定是没有 这个顶点信息的
+				queue.offer(edge.to);
+				selectedVertexs.add(edge.to);
+			}
+
 		}
 
 	}
