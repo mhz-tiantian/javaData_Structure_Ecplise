@@ -1,13 +1,16 @@
 package com.haizhen.graph;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 public class ListGraph<V, E> extends Graph<V, E> {
 	/**
@@ -196,6 +199,100 @@ public class ListGraph<V, E> extends Graph<V, E> {
 
 		}
 
+	}
+
+	// 深度优先搜索 非递归实现
+	@Override
+	public void dfs(V begin, VertexVisitor<V> visitor) {
+		Vertex<V, E> beginVertex = vertices.get(begin);
+		if (beginVertex == null) {
+			return;
+		}
+		Set<Vertex<V, E>> vistedVertexs = new HashSet<>();
+		Stack<Vertex<V, E>> stack = new Stack<>();
+		vistedVertexs.add(beginVertex);
+		stack.push(beginVertex);
+		if (visitor.visit(beginVertex.value)) {
+			return;
+		}
+		// 如果栈不为空
+		while (!stack.isEmpty()) {
+			Vertex<V, E> vertex = stack.pop();
+			for (Edge<V, E> edge : vertex.outEdges) {
+				if (vistedVertexs.contains(edge.to)) {
+					continue;
+				}
+				stack.push(edge.from);
+				stack.push(edge.to);
+				vistedVertexs.add(edge.to);
+				// 如果返回的是 true的话 , 就直接返回了, 不在往下面进行 搜索遍历
+				if (visitor.visit(edge.to.value)) {
+					return;
+				}
+
+			}
+
+		}
+
+	}
+
+	// 深度优先搜索 递归实现
+	public void dfs2(V begin) {
+		Vertex<V, E> beginVertex = vertices.get(begin);
+		if (beginVertex == null) {
+			return;
+		}
+		dfs2(beginVertex, new HashSet());
+	}
+
+	private void dfs2(Vertex<V, E> vertex, Set<Vertex<V, E>> vistedVertices) {
+		System.out.println(vertex.value);
+		vistedVertices.add(vertex);
+		for (Edge<V, E> edge : vertex.outEdges) {
+			if (vistedVertices.contains(edge.to)) {
+				continue;
+			}
+			dfs2(edge.to, vistedVertices);
+		}
+
+	}
+
+	/**
+	 * 拓扑排序
+	 */
+	@Override
+	public List<V> topologicalSort() {
+		List<V> list = new ArrayList<>();
+		Queue<Vertex<V, E>> queue = new LinkedList<>();
+		// 记录某个顶点的入度数
+		Map<Vertex<V, E>, Integer> ins = new HashMap<>();
+
+		// 遍历所有的顶点, 查看 顶点的入度情况 把入度为0 的添加到队列里面
+		vertices.forEach((V v, Vertex<V, E> vertex) -> {
+			int indegree = vertex.inEdges.size();
+			if (indegree == 0) {
+				queue.offer(vertex);
+			} else {
+				// 入度不为0 ,用map 记录他的入度
+				ins.put(vertex, indegree);
+			}
+		});
+		while (!queue.isEmpty()) {
+			Vertex<V, E> vertex = queue.poll();
+			list.add(vertex.value);
+			for (Edge<V, E> edge : vertex.outEdges) {
+				int toIndegree = ins.get(edge.to) - 1;
+				if (toIndegree == 0) {
+					queue.offer(edge.to);
+				} else {
+					ins.put(edge.to, toIndegree);
+				}
+
+			}
+
+		}
+
+		return list;
 	}
 
 	/**

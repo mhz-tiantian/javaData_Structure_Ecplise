@@ -1,5 +1,7 @@
 package com.haizhen.graph;
 
+import java.util.List;
+
 /**
  * 图的 类
  * 
@@ -13,7 +15,9 @@ public abstract class Graph<V, E> {
 
 	WeightManager<E> weightManager;
 
-	public Graph() {}
+	public Graph() {
+	}
+
 	public Graph(WeightManager<E> weightManager) {
 		this.weightManager = weightManager;
 	}
@@ -71,6 +75,13 @@ public abstract class Graph<V, E> {
 
 	// 广度优先搜索
 	public abstract void bfs(V begin, VertexVisitor<V> visitor); // 广度优先搜索
+
+	// 深度优先搜索
+	public abstract void dfs(V begin, VertexVisitor<V> visitor);
+	
+	
+	// 拓扑 排序
+	public abstract List<V> topologicalSort();
 
 	public interface WeightManager<E> { // 管理权重
 		int compare(E w1, E w2); // 比较权重
